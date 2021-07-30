@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/nutty-mines/static/css/main.8c8b27cf.chunk.css",
+    "main.js": "/nutty-mines/static/js/main.0a63476c.chunk.js",
+    "main.js.map": "/nutty-mines/static/js/main.0a63476c.chunk.js.map",
+    "runtime-main.js": "/nutty-mines/static/js/runtime-main.89467357.js",
+    "runtime-main.js.map": "/nutty-mines/static/js/runtime-main.89467357.js.map",
+    "static/js/2.435bb52f.chunk.js": "/nutty-mines/static/js/2.435bb52f.chunk.js",
+    "static/js/2.435bb52f.chunk.js.map": "/nutty-mines/static/js/2.435bb52f.chunk.js.map",
+    "static/js/3.dc1b252c.chunk.js": "/nutty-mines/static/js/3.dc1b252c.chunk.js",
+    "static/js/3.dc1b252c.chunk.js.map": "/nutty-mines/static/js/3.dc1b252c.chunk.js.map",
+    "index.html": "/nutty-mines/index.html",
+    "static/css/main.8c8b27cf.chunk.css.map": "/nutty-mines/static/css/main.8c8b27cf.chunk.css.map",
+    "static/js/2.435bb52f.chunk.js.LICENSE.txt": "/nutty-mines/static/js/2.435bb52f.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/nutty-mines/static/media/logo.6ce24c58.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.89467357.js",
+    "static/js/2.435bb52f.chunk.js",
+    "static/css/main.8c8b27cf.chunk.css",
+    "static/js/main.0a63476c.chunk.js"
+  ]
+}
