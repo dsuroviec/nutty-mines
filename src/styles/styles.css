@@ -113,8 +113,8 @@ button:hover {
 }
 
 /* li:before{
-  content:"\f00c";
-  } */
+content:"\f00c";
+} */
 
 li {
   font-size: 12px;
@@ -133,14 +133,14 @@ li {
 }
 
 /* .animate__animated.animate__hinge {
-    --animate-duration: 0.7s;
-  }
-  .animate__animated.animate__wobble {
-    --animate-duration: 0.7s;
-  }
-  .animate__animated.animate__heartBeat {
-    --animate-duration: 1.4s;
-  } */
+  --animate-duration: 0.7s;
+}
+.animate__animated.animate__wobble {
+  --animate-duration: 0.7s;
+}
+.animate__animated.animate__heartBeat {
+  --animate-duration: 1.4s;
+} */
 /* owl */
 .owl {
   --animate-duration: 0.5s;

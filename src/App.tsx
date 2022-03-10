@@ -1,18 +1,16 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import times from "lodash";
+import { useEffect, useState, useRef, useCallback } from "react";
+import _ from "lodash";
 import { GiSkullCrossedBones } from "react-icons/gi";
 import { GiAcorn } from "react-icons/gi";
 import { GiSquirrel } from "react-icons/gi";
 import { GiPunchBlast } from "react-icons/gi";
 import { AiFillHeart } from "react-icons/ai";
 import { GiOwl } from "react-icons/gi";
-import celebrate  from './celebrate.m4a'
-
-import themeSong from "./themeSong.mp3";
-
-import collision from "src/collision.ogg";
-import owl from "src/owl.mp3";
-function rand(min: any, max: any) {
+import celebrate from "./assets/celebrate.m4a";
+import themeSong from "./assets/themeSong.mp3";
+import collision from "./assets/collision.ogg";
+import owl from "./assets/owl.mp3";
+function rand(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
@@ -46,7 +44,7 @@ const App = () => {
   const [squirrelDirection, setSquirrelDirection] = useState<any>("");
   //for some reason the owl does not stay on the grid if I increase
   //---size of the x and y
-
+  console.log(x, y);
   //create a pathfinder or maze
 
   function maybePlayTheme() {
@@ -335,7 +333,7 @@ const App = () => {
     },
     []
   );
-  console.log(difficulty);
+  console.log(x, y);
   return (
     <div id="container">
       <div className="flash-maze">
@@ -346,9 +344,10 @@ const App = () => {
             gridTemplateRows: `repeat(${x}, 1fr)`,
           }}
         >
-          {/* {times(x, (x) =>
-            times(y, (y) => {
+          {_.times(x, (x) =>
+            _.times(y, (y) => {
               const coords = `${x}x${y}`;
+              console.log(coords);
               return (
                 <div key={coords} className="cell barriers egg location">
                   {barriers?.includes(coords) &&
@@ -388,7 +387,7 @@ const App = () => {
                 </div>
               );
             })
-          )} */}
+          )}
 
           {startWindow === true && (
             <div className="start-window">
