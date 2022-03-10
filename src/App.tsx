@@ -1,57 +1,134 @@
-import { useEffect, useState } from "react";
-import { FaSkullCrossbones } from "react-icons/fa";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import times from "lodash";
+import { GiSkullCrossedBones } from "react-icons/gi";
 import { GiAcorn } from "react-icons/gi";
 import { GiSquirrel } from "react-icons/gi";
+import { GiPunchBlast } from "react-icons/gi";
 import { AiFillHeart } from "react-icons/ai";
+import { GiOwl } from "react-icons/gi";
+import celebrate  from './celebrate.m4a'
 
+import themeSong from "./themeSong.mp3";
+
+import collision from "src/collision.ogg";
+import owl from "src/owl.mp3";
 function rand(min: any, max: any) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+//To do:
+//pressing space or diff buttons consecutively causes clearTimeout issue
+//points not resetting after die
+//when change the grid, the owl goes wacko
+
 const App = () => {
-  const [[x, y], setXY] = useState([11, 11]);
+  const [[x, y]] = useState([10, 10]);
   const [[locationX, locationY], setLocation] = useState([
-    x - 1,
+    y - 1,
     Math.floor(y / 2),
   ]);
-  const [cells, setCells] = useState<string[]>([]);
-  const [barriers, setBarriers] = useState<string[]>([]);
-  const [numOfBarriers, setNumOfBarriers] = useState(11);
+  const [barriers, setBarriers] = useState<any>(null);
   const [blackout, setBlackout] = useState(false);
   const [win, setWin] = useState(false);
   const [[nutX, nutY], setNut] = useState([0, Math.floor(x / 2)]);
   const [lives, setlives] = useState(3);
   const [points, setPoints] = useState(0);
-  const [newMaze, setNewMaze] = useState(false);
+  const [blast, setBlast] = useState<any>([]);
+  const [startWindow, setStartWindow] = useState(true);
+  const [[owlX, owlY], setOwl] = useState([0, Math.floor(x / 2 - 1)]);
+  const [inPlay, setInPlay] = useState(false);
+  const playedThemeRef = useRef(false);
+  const [difficulty, setDifficulty] = useState("Medium");
+  const [animations, setAnimations] = useState(false);
+  const [waitingForLevelStart, setWaitingForLevelStart] = useState(false);
+  const [numOfHints, setNumOfHints] = useState(2);
+  const [owlDirection, setOwlDirection] = useState<any>();
+  const [squirrelDirection, setSquirrelDirection] = useState<any>("");
+  //for some reason the owl does not stay on the grid if I increase
+  //---size of the x and y
 
-  // generates new maze initially and
-  // when barriers or newMaze changes
-  // creating an array of all grid locations in a string ["x,y",...]
-  useEffect(() => {
-    const newCells = [];
-    for (let i = 0; i < x; i++) {
-      for (let j = 0; j < y; j++) {
-        newCells.push(`${i}x${j}`);
-      }
+  //create a pathfinder or maze
+
+  function maybePlayTheme() {
+    if (!playedThemeRef.current) {
+      let theme = new Audio(themeSong);
+
+      theme.volume = 0.5;
+      theme.play();
+
+      playedThemeRef.current = true;
+      theme.loop = true;
     }
-    setCells(newCells);
-    //turns off blackout
-    setBlackout(false);
-    //resets squirrel location
-    setLocation([x - 1, Math.floor(y / 2)]);
-    //resets acorn location
-    setNut([0, Math.floor(y / 2)]);
-    setlives(3);
-    setWin(false);
+  }
 
-    //creates random barriers that don't fall on acorn or squirrel and pushes to barriers state
+  //upon loading, player hits start, triggers theme music, and triggers barriers
+  const handleStart = () => {
+    // Start the song
+    maybePlayTheme();
+
+    if (animations === null) {
+      setAnimations(true);
+    }
+    const timer = setTimeout(() => {
+      setStartWindow(false);
+      setAnimations(false);
+      // setInPlay(true);
+      // setBlackout(true);
+
+      // startGame();
+      return () => clearTimeout(timer);
+    }, 2000);
+  };
+
+  //  The user can also press space bar to start a new game and turn inPlay to true
+  useEffect(() => {
+    if (inPlay === false && startWindow) {
+      const handleKeyDown = (e: any) => {
+        if (e.key === " ") {
+          handleStart();
+          e.preventDefault();
+        }
+      };
+
+      document.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }
+  });
+
+  // Reset for a new level
+  useEffect(() => {
+    if (startWindow) {
+      return;
+    }
+
+    if (barriers) {
+      return;
+    }
+
+    // reset player position
+    const newLocationX = x - 1;
+    const newLocationY = Math.floor(y / 2);
+    setLocation([newLocationX, newLocationY]);
+
+    const numOfCells = x * y;
+
+    // generate new barriers
+    const numOfBarriers =
+      difficulty === "Hard"
+        ? numOfCells / 4
+        : difficulty === "Easy"
+        ? numOfCells / 8
+        : difficulty === "Medium" && numOfCells / 5;
+
     const newBarriers: any = [];
     while (newBarriers.length < numOfBarriers) {
       const randomX = rand(0, x);
       const randomY = rand(0, y);
 
       if (
-        `${randomX}x${randomY}` !== `${locationX}x${locationY}` &&
+        `${randomX}x${randomY}` !== `${newLocationX}x${newLocationY}` &&
         `${randomX}x${randomY}` !== `${nutX}x${nutY}` &&
         !newBarriers.includes(`${randomX}x${randomY}`)
       )
@@ -59,118 +136,209 @@ const App = () => {
     }
 
     setBarriers(newBarriers);
-  }, [numOfBarriers, newMaze]);
 
-  // allows the user to view the barriers upon creation of mase
+    // reset owl position
+    setOwl([0, Math.floor(x / 2 - 1)]);
+
+    // reset lives
+    setlives(3);
+
+    // reset blast
+    setBlast([]);
+
+    //reset user hints
+    setNumOfHints(2);
+
+    // reset win
+    setWin(false);
+
+    // don't allow movement
+    setInPlay(false);
+
+    // show barriers
+    setBlackout(false);
+    setWaitingForLevelStart(true);
+  }, [barriers, startWindow, difficulty, x, y, nutX, nutY]);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setBlackout(true);
-    }, 500);
+    if (waitingForLevelStart) {
+      // after 1s: hide barriers, allow movement
+      const timeout = setTimeout(() => {
+        setWaitingForLevelStart(false);
+        setBlackout(true);
+        setInPlay(true);
+      }, 500);
 
-    return () => clearTimeout(timer);
-  }, [newMaze]);
+      return () => clearTimeout(timeout);
+    }
+  }, [waitingForLevelStart]);
 
   //provides a temporary flash of a hint
   const hint = () => {
-    setBlackout(false);
-    setTimeout(() => {
-      setBlackout(true);
-    }, 100);
+    if (numOfHints > 0 && inPlay) {
+      setBlackout(false);
+      setNumOfHints((numOfHints) => numOfHints - 1);
+      const timer = setTimeout(() => {
+        setBlackout(true);
+        return () => clearTimeout(timer);
+      }, 100);
+    }
   };
+  //generate random Owl
 
-  //change to seperate effects===>
   useEffect(() => {
-    if (win === true) {
+    if (inPlay === true) {
+      const owlInt = setInterval(() => {
+        const move = rand(0, 4);
+        let owlDirection;
+        if (move === 0 && owlX < x - 1) {
+          owlDirection = "animate__animated animate__slideInDown";
+          setOwl([owlX + 1, owlY]);
+        } else if (move === 1 && owlX > 0) {
+          owlDirection = "animate__animated animate__slideInUp";
+          setOwl([owlX - 1, owlY]);
+        } else if (move === 2 && owlY < y - 1) {
+          owlDirection = "animate__animated animate__slideInLeft";
+          setOwl([owlX, owlY + 1]);
+        } else if (move === 3 && owlY > 0) {
+          owlDirection = "animate__animated animate__slideInRight";
+          setOwl([owlX, owlY - 1]);
+        }
+        setOwlDirection(owlDirection);
+      }, 300);
+
+      return () => clearInterval(owlInt);
+    }
+  }, [x, y, owlX, owlY, inPlay]);
+
+  // Check to see if we ran out of lives
+  useEffect(() => {
+    if (!lives) {
+      setInPlay(false);
+      setPoints(0);
       const timeout = setTimeout(() => {
-        setNewMaze(!newMaze);
+        // do something which will have the effect of resetting a new level
+        setBarriers(null);
       }, 2000);
 
       return () => clearTimeout(timeout);
     }
-
-    if (lives === 0) {
-      if (lives === 0) {
-        const timer = setTimeout(() => {
-          setNewMaze(!newMaze);
-          setPoints(0);
-        }, 2000);
-
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [win, lives]);
+  }, [lives]);
 
   //Listen to keyboard if up button, subtract from the x 1
   // if down, add to the x
   //if right, add to the y
   // ifLeft, subtract the y
   useEffect(() => {
-    const handleKeyDown = (e: any) => {
-      let newLocation;
-
-      switch (e.key) {
-        case "ArrowDown":
-          newLocation = [locationX + 1, locationY];
-          break;
-        case "ArrowUp":
-          newLocation = [locationX - 1, locationY];
-          break;
-        case "ArrowRight":
-          newLocation = [locationX, locationY + 1];
-          break;
-        case "ArrowLeft":
-          newLocation = [locationX, locationY - 1];
-          break;
-        default:
-      }
-
-      if (!newLocation) {
-        return;
-      }
-
-      e.preventDefault();
-
-      const [newX, newY] = newLocation;
-
-      if (newX < 0 || newX >= x || newY < 0 || newY >= y) {
-        return;
-      }
-
-      // If you're trying to move to where a barrier is
-      if (barriers.includes(`${newX}x${newY}`)) {
-        // If you have at least one life
-        if (lives > 0) {
-          // Take one life away
-          setlives((lives) => lives - 1);
+    if (inPlay === true) {
+      const handleKeyDown = (e: any) => {
+        let newLocation;
+        let direction;
+        switch (e.key) {
+          case "ArrowDown":
+            newLocation = [locationX + 1, locationY];
+            direction = "animate__animated animate__slideInDown";
+            break;
+          case "ArrowUp":
+            newLocation = [locationX - 1, locationY];
+            direction = "animate__animated animate__slideInUp";
+            break;
+          case "ArrowRight":
+            newLocation = [locationX, locationY + 1];
+            direction = "animate__animated animate__slideInLeft";
+            break;
+          case "ArrowLeft":
+            newLocation = [locationX, locationY - 1];
+            direction = "animate__animated animate__slideInRight";
+            break;
+          default:
         }
 
-        return;
-      }
+        if (!newLocation) {
+          return;
+        }
 
-      setLocation([newX, newY]);
+        // e.preventDefault();
+        // if (e.repeat) {
+        //   return;
+        // }
+        const [newX, newY] = newLocation;
+        if (newX < 0 || newX >= x || newY < 0 || newY >= y) {
+          return;
+        }
 
-      // If the new location is where the nut is
-      if (newX === nutX && newY === nutY) {
-        setWin(true);
+        //as long as you haven't already hit this barrier, run the inner lines
+        if (!blast.includes(`${newX}x${newY}`)) {
+          // If you're trying to move to where a barrier is
+          if (barriers.includes(`${newX}x${newY}`)) {
+            let collide = new Audio(collision);
+            collide.play();
+            //Only apply css class to squirrel if it is not a barrier
+            setSquirrelDirection("");
 
-        setPoints((points) => points + 100);
-      }
-    };
+            // If you have at least one life
+            if (lives > 0) {
+              // Take one life away
+              setBlast([...blast, `${newX}x${newY}`]);
+              setlives((lives) => lives - 1);
+            }
+            return;
+          }
+          setLocation([newX, newY]);
+          //as long as no barriers, apply class to squirrel movement
+          setSquirrelDirection(direction);
+        }
+      };
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  });
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [barriers, blast, inPlay, lives, locationX, locationY, nutX, nutY, x, y]);
 
-  const setDifficulty = (val: any) => {
-    setNumOfBarriers(cells.length / val);
-    setNewMaze(!newMaze);
-    setPoints(0);
-  };
+  // If the owl and the player coincide
+  useEffect(() => {
+    if (`${owlX}x${owlY}` === `${locationX}x${locationY}`) {
+      let owlKill = new Audio(owl);
 
+      owlKill.play();
+      setlives(0);
+    }
+  }, [locationX, locationY, owlX, y, owlY, x]);
+
+  // Check to see if the player got the nut
+  useEffect(() => {
+    // If the new location is where the nut is
+    if (locationX === nutX && locationY === nutY) {
+      let celebration = new Audio(celebrate);
+      celebration.volume = 0.2;
+      celebration.play();
+
+      setWin(true);
+      setInPlay(false);
+      setPoints((points) => points + 100);
+
+      const timeout = setTimeout(() => {
+        setBarriers(null);
+      }, 1500);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [locationX, locationY, nutX, nutY]);
+
+  const handleDifficultyClick = useCallback(
+    (diff) => () => {
+      setPoints(0);
+      setDifficulty(diff);
+      setBarriers(null);
+      setStartWindow(false);
+      maybePlayTheme();
+    },
+    []
+  );
+  console.log(difficulty);
   return (
     <div id="container">
       <div className="flash-maze">
-        Select your level, then use the arrow keys on your keyboard to navigate
         <div
           className="grid"
           style={{
@@ -178,34 +346,122 @@ const App = () => {
             gridTemplateRows: `repeat(${x}, 1fr)`,
           }}
         >
-          {cells.map((cell, index) => (
-            <div key={index} className="cell barriers egg location">
-              {barriers.includes(cell) && !blackout && cell !== "0x5" ? (
-                <FaSkullCrossbones />
-              ) : (
-                ""
-              )}
-              {cell === `${nutX}x${nutY}` &&
-              `${locationX}x${locationY}` !== `${nutX}x${nutY}` ? (
-                <GiAcorn />
-              ) : (
-                ""
-              )}
-              {cell === `${locationX}x${locationY}` && <GiSquirrel />}
+          {/* {times(x, (x) =>
+            times(y, (y) => {
+              const coords = `${x}x${y}`;
+              return (
+                <div key={coords} className="cell barriers egg location">
+                  {barriers?.includes(coords) &&
+                    !blackout &&
+                    startWindow !== true &&
+                    coords !== "0x5" &&
+                    !blast.includes(coords) && (
+                      <GiSkullCrossedBones className={"crossbones"} />
+                    )}
+
+                  {blast.includes(coords) &&
+                    !coords.includes(`${owlX}x${owlY}`) && (
+                      <GiPunchBlast style={{ color: "red" }} />
+                    )}
+
+                  {coords === `${nutX}x${nutY}` && (
+                    <GiAcorn className={"nut"} />
+                  )}
+                  {coords === `${locationX}x${locationY}` && (
+                    <GiSquirrel
+                      className={`squirrel
+                        ${squirrelDirection}
+                        ${
+                          lives === 3
+                            ? "green"
+                            : lives === 2
+                            ? "yellow"
+                            : lives === 1
+                            ? "orange"
+                            : "red"
+                        }`}
+                    />
+                  )}
+                  {coords.includes(`${owlX}x${owlY}`) && (
+                    <GiOwl className={`owl ${owlDirection}`} />
+                  )}
+                </div>
+              );
+            })
+          )} */}
+
+          {startWindow === true && (
+            <div className="start-window">
+              <h2
+                className={`title animate__animated animate__wobble ${
+                  animations === true && "animate__animated animate__hinge"
+                }`}
+              >
+                Nutty Mines
+              </h2>
+              <ul className="instruction">
+                <li>
+                  <GiSquirrel className="bullets animate__animated animate__heartBeat" />{" "}
+                  You are a most hungry squirrel...that nut is looking
+                  scrumptious!
+                </li>
+                <li>
+                  <GiSquirrel className="bullets animate__animated animate__heartBeat" />{" "}
+                  Test your memory by avoiding the hidden dangers
+                </li>
+                <li>
+                  <GiSquirrel className="bullets animate__animated animate__heartBeat" />{" "}
+                  Controls: up, down, left, right
+                </li>
+                <li>
+                  <GiSquirrel className="bullets animate__animated animate__heartBeat" />{" "}
+                  Watch out! the owl is hungry too!
+                </li>
+                <li>
+                  <GiSquirrel className="bullets animate__animated animate__heartBeat" />{" "}
+                  Select difficulty, or press play/(space) to start Medium
+                  difficulty
+                </li>
+              </ul>
+              <button className="start-button" onClick={handleStart}>
+                Play!
+              </button>
             </div>
-          ))}
+          )}
         </div>
         <div className="textField">
           <div className="lives">
             {lives}x <AiFillHeart className="heart" />
           </div>
-          <div className="win">{win === true && "You Win!"}</div>
-          <div>{lives > 0 ? `Points: ${points}` : "Game Over!"}</div>
+
+          <div>
+            {win === true
+              ? "You Win!"
+              : lives === 0
+              ? "Ah Nutz!! Game Over!"
+              : `Points: ${points}`}
+          </div>
         </div>
-        <button onClick={hint}>hint</button>
-        <button onClick={() => setDifficulty(3)}>Hard</button>
-        <button onClick={() => setDifficulty(9)}>Normal</button>
-        <button onClick={() => setDifficulty(14)}>Easy</button>
+        <button className="hint-btn" onClick={hint}>
+          {numOfHints > 1
+            ? `${numOfHints} Hints`
+            : numOfHints > 0
+            ? `${numOfHints} Hint`
+            : "Kurt"}
+        </button>
+        {[
+          { label: "Hard", diff: "Hard" },
+          { label: "Medium", diff: "Medium" },
+          { label: "Easy", diff: "Easy" },
+        ].map(({ label, diff }) => (
+          <button
+            key={diff}
+            className={`diff-buttons ${difficulty === label && "dflt-btn"}`}
+            onClick={handleDifficultyClick(diff)}
+          >
+            {label}
+          </button>
+        ))}
       </div>
     </div>
   );

@@ -1,0 +1,190 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: sans;
+  background-color: black;
+  font-size: 25px;
+  color: white;
+}
+button {
+  font-size: 25px;
+}
+#container {
+  text-align: center;
+  margin: auto;
+}
+
+.flash-maze {
+  margin-top: 25px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  grid-gap: 0px;
+  border: 1px solid white;
+  position: relative;
+  border-radius: 5px;
+}
+
+.cell {
+  height: 50px;
+  width: 50px;
+  position: relative;
+}
+
+/* new styles */
+
+.barriers,
+.egg,
+.location {
+  font-size: 50px;
+}
+
+.blackOut {
+  background-color: black;
+}
+
+.win {
+  font-size: 20px;
+}
+
+.lives {
+  font-size: 20px;
+}
+
+.heart {
+  font-size: 20px;
+  margin-bottom: -3px;
+  color: red;
+}
+
+.start-window {
+  height: 50%;
+  margin-top: 200px;
+  margin-left: 7%;
+  margin-top: 20%;
+  border: 1px solid white;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  position: absolute;
+  width: 86%;
+}
+
+.start-button {
+  display: block;
+  width: 30%;
+  margin: 4% auto;
+  border-radius: 8px;
+}
+.start-button:hover {
+  background-color: darkorange;
+  color: black;
+}
+
+button {
+  border-radius: 5px;
+  padding: 1px;
+  margin: 0 5px;
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+  padding: 1px 5px;
+}
+
+button:hover {
+  background-color: white;
+  color: black;
+}
+.diff-buttons:focus {
+  background-color: darkorange;
+  color: black;
+}
+.instruction {
+  list-style: none;
+  margin: 2% 4%;
+}
+
+/* li:before{
+  content:"\f00c";
+  } */
+
+li {
+  font-size: 12px;
+  text-align: left;
+  padding-top: 5px;
+  margin-top: 1%;
+}
+
+.message-box {
+  height: 30px;
+}
+
+.dflt-btn {
+  background-color: darkorange;
+  color: black;
+}
+
+/* .animate__animated.animate__hinge {
+    --animate-duration: 0.7s;
+  }
+  .animate__animated.animate__wobble {
+    --animate-duration: 0.7s;
+  }
+  .animate__animated.animate__heartBeat {
+    --animate-duration: 1.4s;
+  } */
+/* owl */
+.owl {
+  --animate-duration: 0.5s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+/* swuirrel */
+.squirrel {
+  --animate-duration: 0.4s;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.hint-btn {
+  min-width: 90px;
+}
+
+.squirrel {
+  color: #2ecc71;
+}
+
+.yellow {
+  color: #ffd631;
+}
+
+.orange {
+  color: #ff9d00;
+}
+
+.red {
+  color: rgb(255, 0, 0);
+}
+
+.owl {
+  color: rgb(128, 25, 25);
+}
+
+.nut {
+  color: burlywood;
+}
+
+.crossbones {
+  color: red;
+}
