@@ -47,6 +47,9 @@ button {
 #container {
   text-align: center;
   margin: auto;
+  width: fit-content;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .flash-maze {
@@ -56,6 +59,21 @@ button {
   padding-right: 10px;
   padding-left: 10px;
   width: fit-content;
+}
+@media screen and (max-width: 400px) {
+  /* .flash-maze {
+    max-width: 300px !important;
+  } */
+
+  .cell {
+    height: 40px !important;
+    width: 40px !important;
+  }
+  .barriers,
+  .egg,
+  .location {
+    font-size: 40px !important;
+  }
 }
 
 .grid {
