@@ -510,24 +510,7 @@ const App = () => {
               : `Points: ${points}`}
           </div>
         </div>
-        <div className="dpad">
-          <AiOutlineArrowUp
-            onClick={() => handleDpad("up")}
-            className="dpad-buttons dpad-up"
-          />
-          <AiOutlineArrowRight
-            onClick={() => handleDpad("right")}
-            className="dpad-buttons dpad-right"
-          />
-          <AiOutlineArrowDown
-            onClick={() => handleDpad("down")}
-            className="dpad-buttons dpad-down"
-          />
-          <AiOutlineArrowLeft
-            onClick={() => handleDpad("left")}
-            className="dpad-buttons dpad-left"
-          />
-        </div>
+
         <button className="hint-btn" onClick={hint}>
           {numOfHints > 1
             ? `${numOfHints} Hints`
