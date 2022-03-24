@@ -301,6 +301,67 @@ const App = () => {
     }
   }, [barriers, blast, inPlay, lives, locationX, locationY, nutX, nutY, x, y]);
 
+  const handleDpad = (dpadArrow: String) => {
+    if (inPlay === true) {
+      let newLocation;
+      let direction;
+      switch (dpadArrow) {
+        case "down":
+          newLocation = [locationX + 1, locationY];
+          direction = "animate__animated animate__slideInDown";
+          break;
+        case "up":
+          newLocation = [locationX - 1, locationY];
+          direction = "animate__animated animate__slideInUp";
+          break;
+        case "right":
+          newLocation = [locationX, locationY + 1];
+          direction = "animate__animated animate__slideInLeft";
+          break;
+        case "left":
+          newLocation = [locationX, locationY - 1];
+          direction = "animate__animated animate__slideInRight";
+          break;
+        default:
+      }
+
+      if (!newLocation) {
+        return;
+      }
+
+      // e.preventDefault();
+      // if (e.repeat) {
+      //   return;
+      // }
+      const [newX, newY] = newLocation;
+      if (newX < 0 || newX >= x || newY < 0 || newY >= y) {
+        return;
+      }
+
+      //as long as you haven't already hit this barrier, run the inner lines
+      if (!blast.includes(`${newX}x${newY}`)) {
+        // If you're trying to move to where a barrier is
+        if (barriers.includes(`${newX}x${newY}`)) {
+          let collide = new Audio(collision);
+          collide.play();
+          //Only apply css class to squirrel if it is not a barrier
+          setSquirrelDirection("");
+
+          // If you have at least one life
+          if (lives > 0) {
+            // Take one life away
+            setBlast([...blast, `${newX}x${newY}`]);
+            setlives((lives) => lives - 1);
+          }
+          return;
+        }
+        setLocation([newX, newY]);
+        //as long as no barriers, apply class to squirrel movement
+        setSquirrelDirection(direction);
+      }
+    }
+  };
+
   // If the owl and the player coincide
   useEffect(() => {
     if (`${owlX}x${owlY}` === `${locationX}x${locationY}`) {
@@ -450,10 +511,22 @@ const App = () => {
           </div>
         </div>
         <div className="dpad">
-          <AiOutlineArrowUp className="dpad-buttons dpad-up" />
-          <AiOutlineArrowRight className="dpad-buttons dpad-right" />
-          <AiOutlineArrowDown className="dpad-buttons dpad-down" />
-          <AiOutlineArrowLeft className="dpad-buttons dpad-left" />
+          <AiOutlineArrowUp
+            onClick={() => handleDpad("up")}
+            className="dpad-buttons dpad-up"
+          />
+          <AiOutlineArrowRight
+            onClick={() => handleDpad("right")}
+            className="dpad-buttons dpad-right"
+          />
+          <AiOutlineArrowDown
+            onClick={() => handleDpad("down")}
+            className="dpad-buttons dpad-down"
+          />
+          <AiOutlineArrowLeft
+            onClick={() => handleDpad("left")}
+            className="dpad-buttons dpad-left"
+          />
         </div>
         <button className="hint-btn" onClick={hint}>
           {numOfHints > 1

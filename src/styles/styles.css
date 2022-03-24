@@ -11,8 +11,8 @@ html {
 }
 
 .dpad {
-  height: 100px;
-  width: 100px;
+  height: 130px;
+  width: 130px;
   border: 1px solid white;
   border-radius: 100%;
   margin-left: auto;
@@ -25,20 +25,20 @@ html {
 }
 .dpad-up {
   top: 0;
-  right: 25px;
+  right: 38px;
 }
 .dpad-right {
-  top: 25px;
+  top: 38px;
   right: 0;
 }
 .dpad-left {
   left: 0;
-  top: 25px;
+  top: 38px;
 }
 
 .dpad-down {
   bottom: 0;
-  right: 25px;
+  right: 38px;
 }
 button {
   font-size: 25px;
