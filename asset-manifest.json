@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/nutty-mines/static/css/main.d6363208.css",
-    "main.js": "/nutty-mines/static/js/main.6f4535e7.js",
+    "main.css": "/nutty-mines/static/css/main.58fe0fc6.css",
+    "main.js": "/nutty-mines/static/js/main.8f8dfcf5.js",
     "static/js/787.aa79f8db.chunk.js": "/nutty-mines/static/js/787.aa79f8db.chunk.js",
     "static/media/themeSong.mp3": "/nutty-mines/static/media/themeSong.8e3e843d047db063c9ea.mp3",
     "static/media/celebrate.m4a": "/nutty-mines/static/media/celebrate.1cb45541e0b98be1437c.m4a",
     "static/media/owl.mp3": "/nutty-mines/static/media/owl.004bfe17fec90eeea989.mp3",
     "static/media/collision.ogg": "/nutty-mines/static/media/collision.a72a7e3e6061627fcc88.ogg",
     "index.html": "/nutty-mines/index.html",
-    "main.d6363208.css.map": "/nutty-mines/static/css/main.d6363208.css.map",
-    "main.6f4535e7.js.map": "/nutty-mines/static/js/main.6f4535e7.js.map",
+    "main.58fe0fc6.css.map": "/nutty-mines/static/css/main.58fe0fc6.css.map",
+    "main.8f8dfcf5.js.map": "/nutty-mines/static/js/main.8f8dfcf5.js.map",
     "787.aa79f8db.chunk.js.map": "/nutty-mines/static/js/787.aa79f8db.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d6363208.css",
-    "static/js/main.6f4535e7.js"
+    "static/css/main.58fe0fc6.css",
+    "static/js/main.8f8dfcf5.js"
   ]
 }
