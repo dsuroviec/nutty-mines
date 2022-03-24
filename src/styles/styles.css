@@ -9,6 +9,37 @@ html {
   font-size: 25px;
   color: white;
 }
+
+.dpad {
+  height: 100px;
+  width: 100px;
+  border: 1px solid white;
+  border-radius: 100%;
+  margin-left: auto;
+  position: relative;
+  margin-bottom: 16px;
+}
+.dpad-buttons {
+  position: absolute;
+  font-size: 50px;
+}
+.dpad-up {
+  top: 0;
+  right: 25px;
+}
+.dpad-right {
+  top: 25px;
+  right: 0;
+}
+.dpad-left {
+  left: 0;
+  top: 25px;
+}
+
+.dpad-down {
+  bottom: 0;
+  right: 25px;
+}
 button {
   font-size: 25px;
 }
@@ -21,6 +52,8 @@ button {
   margin-top: 25px;
   display: inline-block;
   vertical-align: middle;
+  padding-right: 4px;
+  padding-left: 4px;
 }
 
 .grid {
@@ -31,6 +64,7 @@ button {
   border: 1px solid white;
   position: relative;
   border-radius: 5px;
+  width: fit-content;
 }
 
 .cell {

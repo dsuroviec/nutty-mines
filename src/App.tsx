@@ -1,11 +1,19 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import _ from "lodash";
-import { GiSkullCrossedBones } from "react-icons/gi";
-import { GiAcorn } from "react-icons/gi";
-import { GiSquirrel } from "react-icons/gi";
-import { GiPunchBlast } from "react-icons/gi";
-import { AiFillHeart } from "react-icons/ai";
-import { GiOwl } from "react-icons/gi";
+import {
+  GiSquirrel,
+  GiPunchBlast,
+  GiSkullCrossedBones,
+  GiAcorn,
+  GiOwl,
+} from "react-icons/gi";
+import {
+  AiFillHeart,
+  AiOutlineArrowDown,
+  AiOutlineArrowLeft,
+  AiOutlineArrowRight,
+  AiOutlineArrowUp,
+} from "react-icons/ai";
 import celebrate from "./assets/celebrate.m4a";
 import themeSong from "./assets/themeSong.mp3";
 import collision from "./assets/collision.ogg";
@@ -333,7 +341,7 @@ const App = () => {
     },
     []
   );
-  console.log(x, y);
+
   return (
     <div id="container">
       <div className="flash-maze">
@@ -440,6 +448,12 @@ const App = () => {
               ? "Ah Nutz!! Game Over!"
               : `Points: ${points}`}
           </div>
+        </div>
+        <div className="dpad">
+          <AiOutlineArrowUp className="dpad-buttons dpad-up" />
+          <AiOutlineArrowRight className="dpad-buttons dpad-right" />
+          <AiOutlineArrowDown className="dpad-buttons dpad-down" />
+          <AiOutlineArrowLeft className="dpad-buttons dpad-left" />
         </div>
         <button className="hint-btn" onClick={hint}>
           {numOfHints > 1
