@@ -404,21 +404,21 @@ const App = () => {
   );
 
   return (
-    <div id="container">
-      <div className="flash-maze">
-        <div
-          className="grid"
-          style={{
-            gridTemplateColumns: `repeat(${y}, 1fr)`,
-            gridTemplateRows: `repeat(${x}, 1fr)`,
-          }}
-        >
-          {_.times(x, (x) =>
-            _.times(y, (y) => {
-              const coords = `${x}x${y}`;
-              console.log(coords);
-              return (
-                <div key={coords} className="cell barriers egg location">
+    <div className="container">
+      <div
+        className="grid"
+        style={{
+          gridTemplateColumns: `repeat(${y}, 1fr)`,
+          gridTemplateRows: `repeat(${x}, 1fr)`,
+        }}
+      >
+        {_.times(x, (x) =>
+          _.times(y, (y) => {
+            const coords = `${x}x${y}`;
+            console.log(coords);
+            return (
+              <div className="cell">
+                <div key={coords} className="cell-contents">
                   {barriers?.includes(coords) &&
                     !blackout &&
                     startWindow !== true &&
@@ -454,101 +454,108 @@ const App = () => {
                     <GiOwl className={`owl ${owlDirection}`} />
                   )}
                 </div>
-              );
-            })
-          )}
+              </div>
+            );
+          })
+        )}
 
-          {startWindow === true && (
-            <div className="start-window">
-              <h2
-                className={`title animate__animated animate__wobble ${
-                  animations === true && "animate__animated animate__hinge"
-                }`}
-              >
-                Nutty Mines
-              </h2>
-              <ul className="instruction">
-                <li>
-                  <GiSquirrel className="bullets animate__animated animate__heartBeat" />{" "}
+        {startWindow === true && (
+          <div className="start-window">
+            <h2
+              className={`title animate__animated animate__wobble ${
+                animations === true && "animate__animated animate__hinge"
+              }`}
+            >
+              Nutty Mines
+            </h2>
+            <ul className="instruction">
+              <li>
+                <GiSquirrel className="animate__animated animate__heartBeat" />
+                <div className="list-text">
                   You are a most hungry squirrel...that nut is looking
                   scrumptious!
-                </li>
-                <li>
-                  <GiSquirrel className="bullets animate__animated animate__heartBeat" />{" "}
+                </div>
+              </li>
+              <li>
+                <GiSquirrel className="animate__animated animate__heartBeat" />
+                <div className="list-text">
                   Test your memory by avoiding the hidden dangers
-                </li>
-                <li>
-                  <GiSquirrel className="bullets animate__animated animate__heartBeat" />{" "}
-                  Controls: up, down, left, right
-                </li>
-                <li>
-                  <GiSquirrel className="bullets animate__animated animate__heartBeat" />{" "}
+                </div>
+              </li>
+              <li>
+                <GiSquirrel className="animate__animated animate__heartBeat" />
+                <div className="list-text">Controls: up, down, left, right</div>
+              </li>
+              <li>
+                <GiSquirrel className="animate__animated animate__heartBeat" />
+                <div className="list-text">
                   Watch out! the owl is hungry too!
-                </li>
-                <li>
-                  <GiSquirrel className="bullets animate__animated animate__heartBeat" />{" "}
-                  Select difficulty, or press play/(space) to start Medium
-                  difficulty
-                </li>
-              </ul>
-              <button className="start-button" onClick={handleStart}>
-                Play!
-              </button>
-            </div>
-          )}
-        </div>
-        <div className="textField">
-          <div className="lives">
-            {lives}x <AiFillHeart className="heart" />
+                </div>
+              </li>
+              <li>
+                <GiSquirrel className="animate__animated animate__heartBeat" />
+                <div className="list-text">
+                  Watch out! the owl is hungry too!
+                </div>
+              </li>
+            </ul>
+            <button className="start-button" onClick={handleStart}>
+              Play!
+            </button>
           </div>
-
-          <div>
-            {win === true
-              ? "You Win!"
-              : lives === 0
-              ? "Ah Nutz!! Game Over!"
-              : `Points: ${points}`}
-          </div>
-        </div>
-        <div className="dpad">
-          <AiOutlineArrowUp
-            onClick={() => handleDpad("up")}
-            className="dpad-buttons dpad-up"
-          />
-          <AiOutlineArrowRight
-            onClick={() => handleDpad("right")}
-            className="dpad-buttons dpad-right"
-          />
-          <AiOutlineArrowDown
-            onClick={() => handleDpad("down")}
-            className="dpad-buttons dpad-down"
-          />
-          <AiOutlineArrowLeft
-            onClick={() => handleDpad("left")}
-            className="dpad-buttons dpad-left"
-          />
-        </div>
-        <button className="hint-btn" onClick={hint}>
-          {numOfHints > 1
-            ? `${numOfHints} Hints`
-            : numOfHints > 0
-            ? `${numOfHints} Hint`
-            : "Kurt"}
-        </button>
-        {[
-          { label: "Hard", diff: "Hard" },
-          { label: "Medium", diff: "Medium" },
-          { label: "Easy", diff: "Easy" },
-        ].map(({ label, diff }) => (
-          <button
-            key={diff}
-            className={`diff-buttons ${difficulty === label && "dflt-btn"}`}
-            onClick={handleDifficultyClick(diff)}
-          >
-            {label}
-          </button>
-        ))}
+        )}
       </div>
+      <div className="textField">
+        <div className="lives">
+          {lives}x <AiFillHeart className="heart" />
+        </div>
+
+        <div>
+          {win === true
+            ? "You Win!"
+            : lives === 0
+            ? "Ah Nutz!! Game Over!"
+            : `Points: ${points}`}
+        </div>
+      </div>
+      <div className="dpad">
+        <AiOutlineArrowUp
+          onClick={() => handleDpad("up")}
+          className="dpad-buttons dpad-up"
+        />
+        <AiOutlineArrowRight
+          onClick={() => handleDpad("right")}
+          className="dpad-buttons dpad-right"
+        />
+        <AiOutlineArrowDown
+          onClick={() => handleDpad("down")}
+          className="dpad-buttons dpad-down"
+        />
+        <AiOutlineArrowLeft
+          onClick={() => handleDpad("left")}
+          className="dpad-buttons dpad-left"
+        />
+      </div>
+      <button className="hint-btn" onClick={hint}>
+        {numOfHints > 1
+          ? `${numOfHints} Hints`
+          : numOfHints > 0
+          ? `${numOfHints} Hint`
+          : "Kurt"}
+      </button>
+      {[
+        { label: "Hard", diff: "Hard" },
+        { label: "Medium", diff: "Medium" },
+        { label: "Easy", diff: "Easy" },
+      ].map(({ label, diff }) => (
+        <button
+          key={diff}
+          className={`diff-buttons ${difficulty === label && "dflt-btn"}`}
+          onClick={handleDifficultyClick(diff)}
+        >
+          {label}
+        </button>
+      ))}
     </div>
   );
 };

@@ -44,36 +44,17 @@ html {
 button {
   font-size: 25px;
 }
-#container {
-  text-align: center;
-  margin: auto;
-  width: fit-content;
-}
 
-.flash-maze {
+.container {
+  margin: auto;
   margin-top: 25px;
   display: inline-block;
-  vertical-align: middle;
-  width: fit-content;
+  text-align: center;
+  width: 100vw;
 }
-/* 
-@media screen and (max-width: 400px) {
-  .flash-maze {
-    max-width: 300px !important;
-  }
-
-  .cell {
-    height: 40px !important;
-    width: 40px !important;
-  }
-  .barriers,
-  .egg,
-  .location {
-    font-size: 40px !important;
-  }
-} */
 
 .grid {
+  max-width: 500px;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(6, 1fr);
@@ -81,21 +62,26 @@ button {
   border: 1px solid white;
   position: relative;
   border-radius: 5px;
+  margin: auto;
+  margin-top: 20px;
+}
+.cell {
+  padding-top: 100%;
+  position: relative;
+}
+.cell-contents {
+  position: absolute;
+  display: flex;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
 }
 
-.cell {
-  height: 50px;
-  width: 50px;
-  position: relative;
+.cell > svg {
+  max-width: 100%;
 }
 
 /* new styles */
-
-.barriers,
-.egg,
-.location {
-  font-size: 50px;
-}
 
 .blackOut {
   background-color: black;
@@ -116,7 +102,7 @@ button {
 }
 
 .start-window {
-  height: 50%;
+  height: auto;
   margin-top: 200px;
   margin-left: 7%;
   margin-top: 20%;
@@ -161,17 +147,31 @@ button:hover {
   list-style: none;
   margin: 2% 4%;
 }
+.instruction > li {
+  display: flex;
+  margin-bottom: 5px;
+}
 
+.instruction > li > svg {
+  max-width: 14px;
+  margin-right: 6px;
+}
+.list-text {
+  font-size: 12px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
 /* li:before{
 content:"\f00c";
 } */
-
+/* 
 li {
   font-size: 12px;
   text-align: left;
   padding-top: 5px;
   margin-top: 1%;
-}
+} */
 
 .message-box {
   height: 30px;
@@ -194,17 +194,12 @@ li {
 /* owl */
 .owl {
   --animate-duration: 0.5s;
-  position: absolute;
-  top: 0;
-  left: 0;
+
   z-index: 1;
 }
 /* swuirrel */
 .squirrel {
   --animate-duration: 0.4s;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 
 .hint-btn {
