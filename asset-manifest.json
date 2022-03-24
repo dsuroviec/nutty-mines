@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/nutty-mines/static/css/main.e00bad62.css",
+    "main.css": "/nutty-mines/static/css/main.c97d88da.css",
     "main.js": "/nutty-mines/static/js/main.1311829a.js",
     "static/js/787.aa79f8db.chunk.js": "/nutty-mines/static/js/787.aa79f8db.chunk.js",
     "static/media/themeSong.mp3": "/nutty-mines/static/media/themeSong.8e3e843d047db063c9ea.mp3",
@@ -8,12 +8,12 @@
     "static/media/owl.mp3": "/nutty-mines/static/media/owl.004bfe17fec90eeea989.mp3",
     "static/media/collision.ogg": "/nutty-mines/static/media/collision.a72a7e3e6061627fcc88.ogg",
     "index.html": "/nutty-mines/index.html",
-    "main.e00bad62.css.map": "/nutty-mines/static/css/main.e00bad62.css.map",
+    "main.c97d88da.css.map": "/nutty-mines/static/css/main.c97d88da.css.map",
     "main.1311829a.js.map": "/nutty-mines/static/js/main.1311829a.js.map",
     "787.aa79f8db.chunk.js.map": "/nutty-mines/static/js/787.aa79f8db.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e00bad62.css",
+    "static/css/main.c97d88da.css",
     "static/js/main.1311829a.js"
   ]
 }
