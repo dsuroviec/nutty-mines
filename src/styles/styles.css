@@ -48,22 +48,19 @@ button {
   text-align: center;
   margin: auto;
   width: fit-content;
-  padding-left: 20px;
-  padding-right: 20px;
 }
 
 .flash-maze {
   margin-top: 25px;
   display: inline-block;
   vertical-align: middle;
-  padding-right: 10px;
-  padding-left: 10px;
   width: fit-content;
 }
+/* 
 @media screen and (max-width: 400px) {
-  /* .flash-maze {
+  .flash-maze {
     max-width: 300px !important;
-  } */
+  }
 
   .cell {
     height: 40px !important;
@@ -74,7 +71,7 @@ button {
   .location {
     font-size: 40px !important;
   }
-}
+} */
 
 .grid {
   display: grid;
