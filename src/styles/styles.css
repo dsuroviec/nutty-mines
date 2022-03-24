@@ -194,14 +194,15 @@ li {
 /* owl */
 .owl {
   --animate-duration: 0.5s;
+  position: absolute;
 
   z-index: 1;
 }
 /* swuirrel */
 .squirrel {
   --animate-duration: 0.4s;
+  position: absolute;
 }
-
 .hint-btn {
   min-width: 90px;
 }
